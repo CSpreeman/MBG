@@ -21,11 +21,22 @@ namespace MITM
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/theme/clean-blog.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mitmApp").Include(
+                        "~/Scripts/MITM/mitmApp.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
+                        "~/Scripts/angular.js",
+                        "~/Scripts/angular-material.js",
+                        "~/Scripts/angular-animate.js",
+                        "~/Scripts/angular-aria.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/clean-blog.css"));
         }
     }
 }
