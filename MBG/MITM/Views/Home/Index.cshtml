@@ -5,47 +5,106 @@
 
 @section stylesheets{
     <style>
-        .intro-header{
-            border-bottom-left-radius:10px;
-            border-bottom-right-radius:10px;
+        .intro-header {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
+        .thumbnailInfo {
+            background-color: white;
+        }
+
+        .thumbnail {
+            background-color: white;
+            border-color: white;
+            padding: 0px;
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+        }
+
+        img {
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+        }
+
+        .thumbnailCon {
+            background-color: white;
+            border-color: white;
+            padding-left: 0px;
+            padding-right: 0px;
+            border: 0px;
+            border-radius: 20px;
+            margin: 10px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .nav {
+            width: 100%;
+            border-radius: 10px;
+        }
     </style>
-    
-    }
+
+}
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/home-bg.jpg')">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>MITM</h1>
-                    <hr class="small">
-                    <span class="subheading">A Blog</span>
+<div class="container-fluid">
+    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>MITM</h1>
+                        <hr class="small">
+                        <span class="subheading">A Blog</span>
+                    </div>
                 </div>
             </div>
         </div>
+    </header>
+    <div class="container-fluid">
+        <ul class="nav nav-justified navbar-default">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About Me</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
     </div>
-</header>
 
-<!-- Main Content -->
-<div class="container">
+    <!-- Main Content -->
     <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-preview">
-                <a href="post.html">
-                    <h2 class="post-title">
-                        Man must explore, and this is exploration at its greatest
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Problems look mighty small from 150 miles up
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
+        <div class="row col-md-3 col-md-push-1 thumbnailCon">
+            <div class="thumbnail">
+                <img class="img" src="~/img/post-sample-image.jpg">
             </div>
-            <hr>
+            <a href="#">
+                <div class="thumbnailInfo">
+                    <div>
+                        <p>Category</p>
+                    </div>
+                    <div>
+                        <p>Content Description here</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="row col-md-3 col-md-push-1 thumbnailCon">
+            <div class="thumbnail">
+                <img class="img" src="~/img/post-sample-image.jpg">
+            </div>
+            <a href="#">
+                <div class="thumbnailInfo">
+                    <div>
+                        <p>Category</p>
+                    </div>
+                    <div>
+                        <p>Content Description here</p>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </div>
