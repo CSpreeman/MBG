@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}

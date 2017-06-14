@@ -24,14 +24,15 @@ namespace MITM
                       "~/Scripts/respond.js",
                       "~/Scripts/theme/clean-blog.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/mitmApp").Include(
-                        "~/Scripts/MITM/mitmApp.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-material.js",
                         "~/Scripts/angular-animate.js",
-                        "~/Scripts/angular-aria.js"));
+                        "~/Scripts/angular-aria.js",
+                        "~/Scripts/angular-ui/ui-bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mitmApp").Include(
+                        "~/Scripts/MITM/mitmApp.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

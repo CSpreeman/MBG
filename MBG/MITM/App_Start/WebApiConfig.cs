@@ -1,6 +1,10 @@
-﻿using System;
+﻿using MITM.App_Start;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace MITM
@@ -19,6 +23,16 @@ namespace MITM
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            JsonMediaTypeFormatter jsonFormatter = new JsonMediaTypeFormatter();
+            //optional: set serializer settings here
+            config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(jsonFormatter));
+
+            MediaTypeFormatterCollection formatters = config.Formatters;
+            JsonMediaTypeFormatter jFormatter = formatters.JsonFormatter;
+            JsonSerializerSettings settings = jsonFormatter.SerializerSettings;
+            // settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

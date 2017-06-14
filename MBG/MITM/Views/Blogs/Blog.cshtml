@@ -1,0 +1,87 @@
+﻿@model MITM.Models.Blog
+@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section stylesheets{
+    <style>
+        img {
+        width:100%;
+        }
+        body {
+            padding-top:0px;
+        }
+        .blogPost {
+            background-color:white;
+            border-bottom-left-radius:10px;
+            border-bottom-right-radius:10px;
+        }
+        .intro-header {
+            margin-bottom:0px;
+        }
+
+    </style>
+    }
+
+<div ng-controller="blogController as BCtrl">
+    <input type="hidden" id="blogId" value="@Model.Id" />
+    <header class="intro-header" style="background-image: url('/img/post-sample-image.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>MITM</h1>
+                        <hr class="small">
+                        <span class="subheading">{{BCtrl.item.title}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="col-md-12 blogPost">
+            <div class="col-md-8">
+                <p>{{BCtrl.item.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        (function () {
+            "use strict";
+
+            angular.module('mitmApp').controller('blogController', BlogController);
+
+
+            function BlogController($scope, $http) {
+                var vm = this;
+                vm.$scope = $scope;
+                vm.$http = $http;
+                vm.blogId =($("#blogId").val());
+                vm.item = {};
+
+                render()
+
+                function render() {
+                    console.log(vm.blogId);
+
+                    $http.get("/api/blog/" + vm.blogId, null).then(function successCallback(response) {
+                        console.log(response);
+                        vm.item = response.data;
+                    }, function errorCallback(response) {
+                        alert("Looks like something went wrong..", response);
+                    })
+                }
+            }
+
+
+        })();
+
+
+    </script>
+    
+    }
+
