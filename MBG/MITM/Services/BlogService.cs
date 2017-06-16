@@ -1,6 +1,7 @@
 ﻿using MITM.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -87,6 +88,50 @@ namespace MITM.Services
                 }
             }
             return Blog;
+        }
+
+        public static int PostSession(Blog payload)
+        {
+            int Id = 0;
+
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection sqlConn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("Blog_Post", sqlConn))
+                {
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Category", payload.Category);
+                    cmd.Parameters.AddWithValue("@Title", payload.Title);
+                    cmd.Parameters.AddWithValue("@Description", payload.Description);
+                    cmd.Parameters.AddWithValue("@ImageLocation", payload.ImageLocation);
+
+                    SqlParameter outPut = cmd.Parameters.Add("@ID", SqlDbType.Int);
+                    outPut.Direction = ParameterDirection.Output;
+
+                    sqlConn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    Id = Convert.ToInt32(outPut.Value);
+
+                }
+                return Id;
+            }
+        }
+
+        public static void DeleteBlog(int id)
+        {
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection sqlConn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("Blog_Delete", sqlConn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    sqlConn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

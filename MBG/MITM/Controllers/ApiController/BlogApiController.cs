@@ -25,5 +25,19 @@ namespace MITM.Controllers.ApiControllers
             return Request.CreateResponse(HttpStatusCode.OK, Blog);
         }
 
+        [Route, HttpPost]
+        public HttpResponseMessage PostBlog(Blog payload)
+        {
+            int Id = BlogService.PostSession(payload);
+            return Request.CreateResponse(HttpStatusCode.OK, Id);
+        }
+
+        [Route("{id:int}"), HttpDelete]
+        public HttpResponseMessage DeleteBlog(int id = 0)
+        {
+            BlogService.DeleteBlog(id);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
     }
 }

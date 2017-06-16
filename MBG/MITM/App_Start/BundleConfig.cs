@@ -29,7 +29,9 @@ namespace MITM
                         "~/Scripts/angular-material.js",
                         "~/Scripts/angular-animate.js",
                         "~/Scripts/angular-aria.js",
-                        "~/Scripts/angular-ui/ui-bootstrap.js"));
+                        "~/Scripts/angular-ui/ui-bootstrap.js",
+                        "~/Scripts/ckeditor/ckeditor.js",
+                        "~/Content/angular-ckeditor-master/angular-ckeditor.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/mitmApp").Include(
                         "~/Scripts/MITM/mitmApp.js"));
@@ -37,7 +39,8 @@ namespace MITM
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/clean-blog.css"));
+                      "~/Content/clean-blog.css",
+                      "~/Scripts/ckeditor/contents.css"));
         }
     }
 }

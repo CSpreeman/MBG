@@ -5,125 +5,6 @@
 
 @section stylesheets{
     <style>
-        .navbar-brand {
-            position: relative;
-            z-index: 2;
-        }
-
-        .navbar-nav.navbar-right .btn {
-            position: relative;
-            z-index: 2;
-            padding: 4px 20px;
-            margin: 10px auto;
-            transition: transform 0.3s;
-        }
-
-        .navbar .navbar-collapse {
-            position: relative;
-            overflow: hidden !important;
-        }
-
-            .navbar .navbar-collapse .navbar-right > li:last-child {
-                padding-left: 22px;
-            }
-
-        .navbar .nav-collapse {
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: 0;
-            padding-right: 120px;
-            padding-left: 80px;
-            width: 100%;
-        }
-
-        .navbar.navbar-default .nav-collapse {
-            background-color: #f8f8f8;
-        }
-
-        .navbar.navbar-inverse .nav-collapse {
-            background-color: #222;
-        }
-
-        .navbar .nav-collapse .navbar-form {
-            border-width: 0;
-            box-shadow: none;
-        }
-
-        .nav-collapse > li {
-            float: right;
-        }
-
-        .btn.btn-circle {
-            border-radius: 50px;
-        }
-
-        .btn.btn-outline {
-            background-color: transparent;
-        }
-
-        .navbar-nav.navbar-right .btn:not(.collapsed) {
-            background-color: rgb(111, 84, 153);
-            border-color: rgb(111, 84, 153);
-            color: rgb(255, 255, 255);
-        }
-
-        .navbar.navbar-default .nav-collapse,
-        .navbar.navbar-inverse .nav-collapse {
-            height: auto !important;
-            transition: transform 0.3s;
-            transform: translate(0px,-50px);
-        }
-
-            .navbar.navbar-default .nav-collapse.in,
-            .navbar.navbar-inverse .nav-collapse.in {
-                transform: translate(0px,0px);
-            }
-
-
-        media screen and (max-width: 767px) {
-            .navbar .navbar-collapse .navbar-right > li:last-child, padding-left: 15px;
-            padding-right: 15px;
-        }
-
-        .navbar .nav-collapse {
-            margin: 7.5px auto;
-            padding: 0;
-        }
-
-            .navbar .nav-collapse .navbar-form {
-                margin: 0;
-            }
-
-        .nav-collapse > li {
-            float: none;
-        }
-
-        .navbar.navbar-default .nav-collapse,
-        .navbar.navbar-inverse .nav-collapse {
-            transform: translate(-100%,0px);
-        }
-
-            .navbar.navbar-default .nav-collapse.in,
-            .navbar.navbar-inverse .nav-collapse.in {
-                transform: translate(0px,0px);
-            }
-
-            .navbar.navbar-default .nav-collapse.slide-down,
-            .navbar.navbar-inverse .nav-collapse.slide-down {
-                transform: translate(0px,-100%);
-            }
-
-            .navbar.navbar-default .nav-collapse.in.slide-down,
-            .navbar.navbar-inverse .nav-collapse.in.slide-down {
-                transform: translate(0px,0px);
-            }
-
-
-
         body {
             padding-top: 0px;
         }
@@ -143,6 +24,7 @@
             border-top-right-radius: 20px;
             border-top-left-radius: 20px;
         }
+
         .thumbnailCon {
             background-color: white;
             border-color: white;
@@ -165,59 +47,56 @@
         .container-fluid {
             padding: 0px;
         }
+
         .row {
-        margin-top:10px;
-        }
-        img {
-            height:300px;
-            width:500px;
+            margin-top: 10px;
         }
 
+        img {
+            height: 300px;
+            width: 500px;
+        }
+
+        #banner {
+            background-image: url("http://www.ilexcontent.com/wp-content/uploads/2015/09/blog-laptop-copy-2.jpg");
+        }
     </style>
 
 }
 
-<!-- Page Header -->
-<!-- Set your background image for this header on the line below. -->
-<div class="container-fluid" ng-controller="homeController as HCtrl">
-    <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>MITM</h1>
-                        <hr class="small">
-                        <span class="subheading">A Blog</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+<section id="banner">
+    <div class="inner">
+        <header>
+            <h1>MITM</h1>
+            <p>A Blog</p>
+        </header>
+        <a href="#main" class="more">Learn More</a>
+    </div>
+</section>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div ng-repeat="item in HCtrl.items" class="row col-md-12">
-                <div class="col-md-2">
-                    <h2>{{item.createdDate | date}}</h2>
-                </div>
-                <div class="col-md-4">
-                    <img ng-src="{{item.imageLocation}}"/>
-                </div>
-                <div class="col-md-6 col-md-push-2">
-                    <h5>{{item.title}}</h5>
+<!-- Main -->
+<div id="main" ng-controller="homeController as HCtrl">
+    <div class="inner">
 
-                    <hr />
+        <!-- Boxes -->
+        <div class="thumbnails">
 
-                    <h3><a href="/blogs/blog/{{item.id}}">View Post</a></h3>
+            <div class="box" ng-repeat="item in HCtrl.items">
+                <a href="" class="image fit"><img ng-src="{{item.imageLocation}}" alt="" /></a>
+                <div class="inner">
+                    <h3>{{item.title}}</h3>
+                    <p>{{item.description | limitTo : 50}}</p>
+                    <a href="/blogs/blog/{{item.id}}" class="button fit">View</a>
                 </div>
-                <hr />
             </div>
         </div>
     </div>
 </div>
 
+
+
 @section scripts{
+    <script src="~/Scripts/MITM/angularFactorys/BlogFactory.js"></script>
     <script>
         (function () {
             "use strict";
@@ -225,22 +104,21 @@
             angular.module('mitmApp').controller('homeController', Homecontroller);
 
 
-            function Homecontroller($scope, $http) {
+            function Homecontroller($scope, $http, blogService) {
                 var vm = this;
                 vm.$scope = $scope;
                 vm.$http = $http;
+                vm.blogService = blogService;
                 vm.items = [];
 
                 render()
 
                 function render() {
-
-                    $http.get("/api/blog", null).then(function successCallback(response) {
-                        console.log(response);
-                        vm.items = response.data;
-                    }, function errorCallback(response) {
-                        alert("Looks like something went wrong..", response);
-                    })
+                    return blogService.getBlogs()
+                        .then(function (data) {
+                            vm.items = data.data;
+                            console.log(data)
+                        });
                 }
             }
 

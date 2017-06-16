@@ -1,4 +1,4 @@
-﻿@model MITM.Models.Blog
+﻿@model MITM.Models.Base
 @{
     ViewBag.Title = "Blog";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,26 +6,37 @@
 @section stylesheets{
     <style>
         img {
-        width:100%;
-        }
-        body {
-            padding-top:0px;
-        }
-        .blogPost {
-            background-color:white;
-            border-bottom-left-radius:10px;
-            border-bottom-right-radius:10px;
-        }
-        .intro-header {
-            margin-bottom:0px;
+            width: 100%;
         }
 
+        body {
+            padding-top: 0px;
+        }
+
+        .blogPost {
+            background-color: dimgrey;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .intro-header {
+            margin-bottom: 0px;
+        }
+
+        p {
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            color: ghostwhite;
+        }
+
+        h3 {
+            color: ghostwhite;
+        }
     </style>
-    }
+}
 
 <div ng-controller="blogController as BCtrl">
     <input type="hidden" id="blogId" value="@Model.Id" />
-    <header class="intro-header" style="background-image: url('/img/post-sample-image.jpg')">
+    <header class="intro-header" style="background-image: url('{{BCtrl.item.imageLocation}}')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -39,41 +50,43 @@
         </div>
     </header>
 
-    <div class="container">
-        <div class="col-md-12 blogPost">
-            <div class="col-md-8">
-                <p>{{BCtrl.item.description}}</p>
-            </div>
+    <div class="col-md-12 blogPost">
+        <div class="col-md-8">
+            <p>{{BCtrl.item.description}}</p>
+        </div>
+        <div class="col-md-4">
+            <h3>Date Posted: {{BCtrl.item.createdDate | date}}</h3>
+            <hr />
+            <h3>Category: {{BCtrl.item.category}}</h3>
+            <hr />
+            <h3><a href="/home/">Back Home</a></h3>
         </div>
     </div>
 </div>
 
 @section scripts{
+    <script src="~/Scripts/MITM/angularFactorys/BlogFactory.js"></script>
     <script>
         (function () {
             "use strict";
 
             angular.module('mitmApp').controller('blogController', BlogController);
 
-
-            function BlogController($scope, $http) {
+            function BlogController($scope, $http, blogService) {
                 var vm = this;
                 vm.$scope = $scope;
                 vm.$http = $http;
-                vm.blogId =($("#blogId").val());
+                vm.blogService = blogService;
+                vm.blogId = ($("#blogId").val());
                 vm.item = {};
 
                 render()
 
                 function render() {
-                    console.log(vm.blogId);
-
-                    $http.get("/api/blog/" + vm.blogId, null).then(function successCallback(response) {
-                        console.log(response);
-                        vm.item = response.data;
-                    }, function errorCallback(response) {
-                        alert("Looks like something went wrong..", response);
-                    })
+                    return blogService.getBlogById(vm.blogId)
+                        .then(function (data) {
+                            vm.item = data.data;
+                        });
                 }
             }
 
@@ -82,6 +95,6 @@
 
 
     </script>
-    
-    }
+
+}
 

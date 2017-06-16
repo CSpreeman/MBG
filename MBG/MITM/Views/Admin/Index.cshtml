@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section stylesheets{
+    <style>
+    </style>
+
+
+}
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<div class="container col-md-12" ng-controller="adminController as ACtrl">
+
+    <div class="col-sm-2 col-md-2 sidebar" ng-init="showMe = 2">
+        <div class="list-group module">
+            <a class="list-group-item settingsList" ng-class="{'active' : showMe == 2}" ng-click="showMe = 2">
+                <i class="fa fa-group"></i> Add Blog<i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <a class="list-group-item settingsList" ng-class="{'active' : showMe == 3}" ng-click="showMe = 3">
+                <i class="fa fa-credit-card"></i> Manage Blogs<i class="fa fa-angle-right pull-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div ng-show="showMe==2" class="center-orientation container col-md-8 center-info" ng-controller="addBlogController as ABCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-user"></i> Add Blog</h3>
+            </div>
+            <div class="panel-body">
+                <div class="accordion-section">
+                    <form name="blogAddForm" class="form-group" ng-submit="blogAddForm.$valid && ABCtrl.submit()" novalidate>
+                        <div>
+                            <label for="category">Category</label>
+                            <input class="form-control" name="category" type="text" ng-model="ABCtrl.newBlog.category" placeholder="Please Enter a Category" required />
+                        </div>
+                        <div>
+                            <label for="title">Title</label>
+                            <input class="form-control" name="title" type="text" ng-model="ABCtrl.newBlog.title" placeholder="Please Enter a Title" required />
+                        </div>
+                        <div>
+                            <label for="imageLocation">Image Url</label>
+                            <input class="form-control" name="imageLocation" type="text" ng-model="ABCtrl.newBlog.imageLocation" placeholder="Please Enter Image URL" required />
+                        </div>
+                        <div>
+                            <label for="description">Description</label>
+                            <div ckeditor="options" ng-model="ABCtrl.newBlog.description" ready="onReady()"></div>
+                        </div>
+                        <br />
+                        <input type="submit" class="btn btn-default" value="Create Blog" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="showMe==3" class="center-orientation container col-md-8 center-info" ng-controller="manageBlogController as MBCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-user"></i> Manage Blogs</h3>
+            </div>
+            <div class="panel-body">
+                <div class="accordion-section">
+                    <div class="container">
+                        <!-- Boxes -->
+                        <div class="thumbnails" ng-repeat="item in MBCtrl.items">
+
+                            <div class="box">
+                                <a href="" class="image fit"><img ng-src="{{item.imageLocation}}" alt="" /></a>
+                                <div class="inner">
+                                    <h3>{{item.title}}</h3>
+                                    <p>{{item.description | limitTo : 50}}</p>
+                                    <a href="/blogs/blog/{{item.id}}" class="button fit">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/MITM/angularFactorys/BlogFactory.js"></script>
+    <script>
+        (function () {
+            "use strict";
+            angular.module('mitmApp').controller('adminController', AdminController);
+
+            function AdminController($scope) {
+                var vm = this;
+                vm.$scope = $scope;
+
+
+            };
+        })();
+        (function () {
+            "use strict";
+            angular.module('mitmApp').controller('addBlogController', AddBlogController);
+
+            function AddBlogController($scope, blogService) {
+                var vm = this;
+                vm.$scope = $scope;
+                vm.blogService = blogService;
+                vm.submit = _submit;
+
+
+                function _submit() {
+                    console.log(vm.newBlog);
+                    return blogService.postBlog(vm.newBlog)
+                        .then(function (data) {
+                            console.log(data);
+                        });
+                }
+
+            };
+        })();
+        (function () {
+            "use strict";
+            angular.module('mitmApp').controller('manageBlogController', ManageBlogController);
+
+            function ManageBlogController($scope) {
+                var vm = this;
+                vm.$scope = $scope;
+                vm.items = {};
+
+
+            };
+        })();
+
+    </script>
+
+
+}
+

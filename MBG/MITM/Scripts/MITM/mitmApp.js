@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    angular.module("mitmApp", ['ui.bootstrap']);
+    angular.module("mitmApp", ['ui.bootstrap', 'ckeditor']);
 
 
 })();

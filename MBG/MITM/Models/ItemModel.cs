@@ -5,7 +5,7 @@ using System.Web;
 
 namespace MITM.Models
 {
-    public class ItemModel<T> : Blog
+    public class ItemModel<T> : Base
     {
         public T Item { get; set; }   
     }
