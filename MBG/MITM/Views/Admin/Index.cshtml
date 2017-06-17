@@ -111,6 +111,7 @@
                     console.log(vm.newBlog);
                     return blogService.postBlog(vm.newBlog)
                         .then(function (data) {
+                            vm.newBlog = {};
                             console.log(data);
                         });
                 }

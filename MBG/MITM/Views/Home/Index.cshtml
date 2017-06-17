@@ -85,7 +85,7 @@
                 <a href="" class="image fit"><img ng-src="{{item.imageLocation}}" alt="" /></a>
                 <div class="inner">
                     <h3>{{item.title}}</h3>
-                    <p>{{item.description | limitTo : 50}}</p>
+                    <p ng-bind-html="item.description | limitTo : 30"></p>
                     <a href="/blogs/blog/{{item.id}}" class="button fit">View</a>
                 </div>
             </div>
@@ -110,14 +110,20 @@
                 vm.$http = $http;
                 vm.blogService = blogService;
                 vm.items = [];
+                var regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]!\$&'\(\)\*\+,;=.]+$/;
+
 
                 render()
 
                 function render() {
                     return blogService.getBlogs()
                         .then(function (data) {
+                            angular.forEach(data.data, function (i) {
+                                if (!regex.test(i.imageLocation)) {
+                                    i.imageLocation = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQPJWkRvA_6y0PpxH6xfjVdXJofCvf3WCHnjOgin0QLw990C3Sg";
+                                }
+                            })
                             vm.items = data.data;
-                            console.log(data)
                         });
                 }
             }

@@ -97,7 +97,7 @@ namespace MITM.Services
             string connString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection sqlConn = new SqlConnection(connString))
             {
-                using (SqlCommand cmd = new SqlCommand("Blog_Post", sqlConn))
+                using (SqlCommand cmd = new SqlCommand("Blog_Insert", sqlConn))
                 {
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;

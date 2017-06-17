@@ -26,6 +26,7 @@ namespace MITM
 
             bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
                         "~/Scripts/angular.js",
+                        "~/Scripts/angular-sanitize.js",
                         "~/Scripts/angular-material.js",
                         "~/Scripts/angular-animate.js",
                         "~/Scripts/angular-aria.js",
