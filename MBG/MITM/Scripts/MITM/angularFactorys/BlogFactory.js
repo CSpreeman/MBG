@@ -9,7 +9,8 @@
         return {
             getBlogs: _getBlogs,
             getBlogById: _getBlogById,
-            postBlog: _postBlog
+            postBlog: _postBlog,
+            deleteBlog: _deleteBlog
         };
 
         function _getBlogs() {
@@ -54,6 +55,21 @@
                 console.log('Failed to get data', error);
             }
 
+
+        }
+
+        function _deleteBlog(id) {
+            return $http.delete('/api/blog/' + id)
+            .then(deleteBlogComplete)
+            .catch(deleteBlogFailed);
+
+            function deleteBlogComplete(response) {
+                return response;
+            }
+
+            function deleteBlogFailed(error) {
+                console.log('Failed to get data', error);
+            }
 
         }
     }
