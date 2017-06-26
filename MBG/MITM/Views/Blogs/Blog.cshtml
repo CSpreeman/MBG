@@ -15,8 +15,6 @@
 
         .blogPost {
             background-color: dimgrey;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
         }
 
         .intro-header {
@@ -30,6 +28,10 @@
 
         h3 {
             color: ghostwhite;
+        }
+
+        .modal-content {
+            background-color: dimgrey;
         }
     </style>
 }
@@ -61,10 +63,29 @@
             <h3><a href="/home/">Back Home</a></h3>
         </div>
     </div>
+    <div class="container">
+        <div>
+            <button ng-click="showComments = !showComments" type="button">{{toggleText}}</button>
+            <button ng-click="BCtrl.addComment()" type="button">Add Comment</button>
+            <br />
+            <br />
+        </div>
+        <div class="container" ng-show="showComments">
+            <div ng-repeat="comment in BCtrl.comments">
+                <h3>{{comment.subject}}</h3>
+                <div>By <span>{{comment.name}}</span> | {{comment.dateCreated | date}}</div>
+                <div>
+                    <p>{{comment.message}}</p>
+                </div>
+                <hr />
+            </div>
+
+        </div>
+    </div>
 </div>
 
 @section scripts{
-
+    <script src="~/Scripts/MITM/angularFactorys/CommentFactory.js"></script>
     <script src="~/Scripts/MITM/angularFactorys/BlogFactory.js"></script>
     <script>
         (function () {
@@ -72,24 +93,84 @@
 
             angular.module('mitmApp').controller('blogController', BlogController);
 
-            function BlogController($scope, $http, blogService) {
+            function BlogController($scope, $http, blogService, $uibModal, commentService) {
                 var vm = this;
                 vm.$scope = $scope;
                 vm.$http = $http;
                 vm.blogService = blogService;
+                vm.commentService = commentService;
                 vm.blogId = ($("#blogId").val());
                 vm.item = {};
+                vm.$uibModal = $uibModal;
+                vm.comments = [];
+                vm.addComment = _addComment;
 
                 render()
+
+                $scope.$watch('showComments', function () {
+                    $scope.toggleText = $scope.showComments ? 'Hide Comments' : 'Show Comments';
+                })
 
                 function render() {
                     return blogService.getBlogById(vm.blogId)
                         .then(function (data) {
-
                             vm.item = data.data;
+                            return commentService.getCommentsByBlogId(vm.blogId)
+                                .then(function (data) {
+                                    vm.comments = data.data
+                                });
                         });
+
+                }
+
+                function _addComment() {
+                    console.log("in add comment ")
+
+                    var modalInstance = $uibModal.open({
+                        templateUrl: '/Content/ModalTemplates/AddCommentModal.html',
+                        controller: 'ModalInstanceCtrl',
+                        controllerAs: 'modalCtrl',
+                        size: 'md',
+                        backdrop: true,
+                        windowClass: 'app-modal-window',
+                        resolve: {
+                            items: function () {
+                                return vm.items;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        selectedItem.blogId = vm.blogId;
+                        return commentService.postComment(selectedItem)
+                            .then(function (data) {
+                                selectedItem.id = data.data;
+                                vm.comments.push(selectedItem);
+                            });
+                    }, function () {
+                        console.log('Modal dismissed at: ' + new Date());
+                    });
+
                 }
             }
+
+
+        })();
+
+        (function () {
+            "use strict";
+
+            angular.module('mitmApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items, $window) {
+                var vm = this;
+
+                vm.submit = function () {
+                    $uibModalInstance.close(vm.addComment);
+                };
+
+                vm.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            });
 
 
         })();

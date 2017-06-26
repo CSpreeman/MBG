@@ -31,6 +31,7 @@ namespace MITM
                         "~/Scripts/angular-animate.js",
                         "~/Scripts/angular-aria.js",
                         "~/Scripts/angular-ui/ui-bootstrap.js",
+                        "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                         "~/Scripts/ckeditor/ckeditor.js",
                         "~/Content/angular-ckeditor-master/angular-ckeditor.js"));
 
