@@ -7,10 +7,24 @@
 
     function CommentService($http) {
         return {
+            getAllComments : _getAllComments,
             getCommentsByBlogId: _getCommentsByBlogId,
             postComment: _postComment,
             deleteComment: _deleteComment
         };
+
+        function _getAllComments() {
+            return $http.get('api/comment')
+                .then(getAllCommentsComplete)
+                .catch(getAllCommentsFailed);
+
+            function getAllCommentsComplete(response) {
+                return response;
+            }
+            function getAllCommentsFailed(error) {
+                console.log('Failed to get data', error)
+            }
+        }
 
         function _getCommentsByBlogId(id) {
             return $http.get('/api/comment/' + id)

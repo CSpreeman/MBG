@@ -7,10 +7,9 @@
 @section stylesheets{
     <style>
         .btn {
-        padding:10px;
-        border-radius:20px;
+            padding: 10px;
+            border-radius: 20px;
         }
-
     </style>
 }
 
@@ -67,24 +66,36 @@
             </div>
             <div class="panel-body">
                 <div class="accordion-section">
-                        <div class="col-md-12">
-                            <h2>Current Blogs</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Blog</th>
-                                        <th>Date Created</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in MBCtrl.items">
-                                        <td>{{item.title | limitTo : 50}}</td>
-                                        <td>{{item.createdDate | date}}</td>
-                                        <td><a ng-click="MBCtrl.deleteBlog(item)" class="btn btn-sm btn-danger">Delete</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="col-md-12">
+                        <h2>Current Blogs</h2>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Blog</th>
+                                    <th>Date Created</th>
+                                    <th>Comments</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in MBCtrl.items">
+                                    <td>{{item.title | limitTo : 50}}</td>
+                                    <td>{{item.createdDate | date}}</td>
+                                    <td><a ng-click="MBCtrl.showComments(item)" class="btn btn-sm btn-info">Show Comment</a></td>
+                                    <td><a ng-click="MBCtrl.deleteBlog(item)" class="btn btn-sm btn-danger">Delete</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <h1 style="text-align:center;">Comments</h1>
+                            <div ng-repeat="comment in MBCtrl.comments">
+                                <div ng-show="showComments == {{comment.blogId}}">
+                                    <h1>{{comment.name}}</h1>
+                                    <p>{{comment.subject}}</p>
+                                    <p>{{comment.message}}</p>
+                                    <a ng-click="MBCtrl.deleteComment(comment)" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,6 +104,7 @@
     </div>
 </div>
 @section scripts{
+    <script src="~/Scripts/MITM/angularFactorys/CommentFactory.js"></script>
     <script src="~/Scripts/MITM/angularFactorys/BlogFactory.js"></script>
     <script>
         (function () {
@@ -106,7 +118,6 @@
                 $scope.$on('newBlogCreated', function (event, data) {
                     $scope.$broadcast('NewBlogHydrate', data)
                 })
-
 
             };
         })();
@@ -131,23 +142,28 @@
 
             };
         })();
-
         (function () {
             "use strict";
             angular.module('mitmApp').controller('manageBlogController', ManageBlogController);
 
-            function ManageBlogController($scope, $http, blogService) {
+            function ManageBlogController($scope, $http, blogService, commentService) {
                 var vm = this;
                 vm.$scope = $scope;
                 vm.blogService = blogService;
+                vm.commentService = commentService;
                 vm.items = [];
+                vm.comments = [];
                 vm.deleteBlog = _deleteBlog;
+                vm.showComments = _showComments;
+                vm.deleteComment = _deleteComment;
                 var regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]!\$&'\(\)\*\+,;=.]+$/;
 
                 $scope.$on('NewBlogHydrate', function (event, data) {
                     vm.items.push(data);
                 })
-
+                $scope.$watch('showComments', function () {
+                    $scope.toggleText = $scope.showComments ? 'Hide Comments' : 'Show Comments';
+                })
 
                 render();
 
@@ -160,6 +176,10 @@
                                   }
                               })
                               vm.items = data.data;
+                              return commentService.getAllComments()
+                               .then(function (data) {
+                                   vm.comments = data.data
+                               });
                           });
                 }
 
@@ -169,6 +189,19 @@
                            .then(function (data) {
                                vm.items.splice(index, 1);
                            });
+                }
+
+                function _showComments(item) {
+                    console.log(item)
+                    $scope.showComments = item.id;
+                }
+                function _deleteComment(comment) {
+                  var deleteComment = vm.comments.indexOf(comment)
+                    console.log(comment.id);
+                    return commentService.deleteComment(comment.id)
+                            .then(function (data) {
+                                vm.comments.splice(deleteComment, 1);
+                            });
                 }
 
             };

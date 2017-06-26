@@ -33,6 +33,10 @@
         .modal-content {
             background-color: dimgrey;
         }
+        .btn {
+            background-color:#70c7be;
+            border-radius:5px;
+        }
     </style>
 }
 <div ng-controller="blogController as BCtrl">
@@ -60,13 +64,15 @@
             <hr />
             <h3>Category: {{BCtrl.item.category}}</h3>
             <hr />
-            <h3><a href="/home/">Back Home</a></h3>
+            <a class="btn" href="/home/">Back Home</a>
         </div>
     </div>
     <div class="container">
         <div>
-            <button ng-click="showComments = !showComments" type="button">{{toggleText}}</button>
-            <button ng-click="BCtrl.addComment()" type="button">Add Comment</button>
+            <div class="">
+                <button ng-click="showComments = !showComments" type="button">{{toggleText}}</button>
+                <button ng-click="BCtrl.addComment()" type="button">Add Comment</button>
+            </div>
             <br />
             <br />
         </div>

@@ -12,6 +12,12 @@ namespace MITM.Controllers.ApiControllers
     [RoutePrefix("api/comment")]
     public class CommentsApiController : ApiController
     {
+        [Route(""), HttpGet]
+        public HttpResponseMessage getAllComments()
+        {
+            List<Comment> commentList = CommentService.GetAllComments();
+            return Request.CreateResponse(HttpStatusCode.OK, commentList);
+        }
 
         [Route("{id:int}"), HttpGet]
         public HttpResponseMessage getCommentsByBlogId(int id = 0)
